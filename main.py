@@ -19,9 +19,12 @@ OUT_PATH = "/output/entry.txt"
 
 def check_title(text):
     # Gate (competition.yaml): UTF-8 text of 1 to 60 characters,
-    # not only white space.
+    # not only white space — and one job title means one line: a newline
+    # inside the text would make it two lines, not one title.
     if not isinstance(text, str):
         raise SystemExit("entry is not text")
+    if "\n" in text or "\r" in text:
+        raise SystemExit("entry fails the gate: title must be a single line")
     if not 1 <= len(text) <= 60:
         raise SystemExit("entry fails the gate: length %d, must be 1-60" % len(text))
     if not text.strip():
